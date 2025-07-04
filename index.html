@@ -504,30 +504,6 @@
             line-height: 1.7;
         }
 
-        /* --- SEÇÃO 12: CONTATO --- */
-        #contact { background-color: var(--light-gray); }
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-        }
-        .form-group textarea {
-            resize: vertical;
-            min-height: 150px;
-        }
-        .recaptcha-notice {
-            font-size: 0.8rem;
-            color: #777;
-        }
-
         /* --- FOOTER --- */
         .site-footer {
             background-color: #111;
@@ -580,7 +556,7 @@
         @media (max-width: 768px) {
             .section { padding: 60px 0; }
             .hero-quote { font-size: 2rem; }
-            .hero-person-photo { display: none; } /* Esconde a foto da pessoa em telas pequenas */
+            .hero-person-photo { display: none; /* Esconde a foto da pessoa em telas pequenas */ }
             .cta-buttons { flex-direction: column; }
             .btn-large { width: 100%; text-align: center; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -867,34 +843,6 @@
             </div>
         </section>
         
-        <!-- ======================= SEÇÃO 12: CONTATO ======================= -->
-        <section id="contact" class="section">
-            <div class="container two-columns">
-                <div class="column">
-                    <h2 class="section-title" style="text-align: left;">Entre em Contato</h2>
-                    <p>Tem alguma dúvida, sugestão ou quer saber mais sobre nossos planos? Preencha o formulário ao lado e nossa equipe retornará o mais breve possível.</p>
-                </div>
-                <div class="column">
-                    <form action="#" class="contact-form">
-                        <div class="form-group">
-                            <input type="text" placeholder="Nome completo" required>
-                        </div>
-                         <div class="form-group">
-                            <input type="email" placeholder="Seu melhor e-mail" required>
-                        </div>
-                         <div class="form-group">
-                            <textarea placeholder="Sua mensagem" required></textarea>
-                        </div>
-                        <div class="form-group recaptcha-notice">
-                            <input type="checkbox" id="recaptcha" required>
-                            <label for="recaptcha">Não sou um robô (Simulação)</label>
-                        </div>
-                        <button type="submit" class="btn btn-primary">ENVIAR</button>
-                    </form>
-                </div>
-            </div>
-        </section>
-
     </main>
 
     <!-- ======================= FOOTER ======================= -->
