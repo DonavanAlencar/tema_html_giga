@@ -12,6 +12,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- JavaScript do Carrossel -->
+    <script src="carousel.js" defer></script>
 
     <style>
         /* --- 1. CONFIGURAÇÕES GLOBAIS E VARIÁVEIS --- */
@@ -234,6 +237,72 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(90deg, rgba(6, 22, 59, 0.9) 0%, rgba(8, 33, 90, 0.7) 50%, rgba(10, 45, 120, 0.4) 100%);
+        }
+
+        /* Controles do Carrossel */
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 10;
+        }
+
+        .carousel-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .carousel-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .carousel-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Indicadores do Carrossel */
+        .carousel-indicators {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        .indicator:hover {
+            background: rgba(255, 255, 255, 0.8);
         }
 
         .slide-content {
@@ -562,6 +631,26 @@
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .hexagon-grid { grid-template-columns: repeat(2, 1fr); justify-items: center; }
             #engrenagem .two-columns { flex-direction: column-reverse; }
+            
+            /* Responsividade dos controles do carrossel */
+            .carousel-controls {
+                padding: 0 15px;
+            }
+            
+            .carousel-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+            
+            .carousel-indicators {
+                bottom: 20px;
+            }
+            
+            .indicator {
+                width: 10px;
+                height: 10px;
+            }
         }
     </style>
 </head>
@@ -626,6 +715,37 @@
                         </div>
                     </div>
                 </div>
+                <!-- Slide 3 -->
+                <div class="slide" style="background-image: url('https://via.placeholder.com/1920x1080/0a46b8/FFFFFF?text=Background+Image+3');">
+                    <div class="slide-content">
+                         <div class="container two-columns">
+                            <div class="column">
+                                <h1 class="hero-quote">"A persistência é o caminho do êxito."</h1>
+                                <p class="hero-author">Carlos Santos - Diamante Elite</p>
+                            </div>
+                            <div class="column">
+                                <img src="http://mtidigital.com.br/wp-content/uploads/2025/07/lucas.png" alt="Foto de Carlos Santos" class="hero-person-photo">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Controles do Carrossel -->
+            <div class="carousel-controls">
+                <button class="carousel-btn prev-btn" onclick="changeSlide(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-btn next-btn" onclick="changeSlide(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <!-- Indicadores do Carrossel -->
+            <div class="carousel-indicators">
+                <span class="indicator active" onclick="goToSlide(0)"></span>
+                <span class="indicator" onclick="goToSlide(1)"></span>
+                <span class="indicator" onclick="goToSlide(2)"></span>
             </div>
         </section>
 
@@ -873,62 +993,44 @@
     </footer>
     
     <script>
-        // --- SCRIPT PARA FUNCIONALIDADES DO PROTÓTIPO ---
+        // --- SCRIPT PARA FUNCIONALIDADES ADICIONAIS ---
 
-        // 1. Simulação do Slider Automático do Hero
-        const slides = document.querySelectorAll('.slide');
-        let currentSlide = 0;
+        // Animação do Contador de Números ao rolar a página
+        document.addEventListener('DOMContentLoaded', () => {
+            const statsSection = document.getElementById('numbers');
+            const counters = document.querySelectorAll('.number');
+            let started = false; // Para garantir que a animação rode apenas uma vez
 
-        function showSlide(index) {
-            slides.forEach((slide, i) => {
-                slide.classList.remove('active');
-                if (i === index) {
-                    slide.classList.add('active');
-                }
-            });
-        }
+            function animateCounters() {
+                counters.forEach(counter => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText;
 
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % slides.length;
-            showSlide(currentSlide);
-        }
+                    const increment = target / 200; // Velocidade da animação
 
-        // Inicia a troca de slides a cada 5 segundos
-        setInterval(nextSlide, 5000);
+                    if (count < target) {
+                        counter.innerText = `${Math.ceil(count + increment)}`;
+                        setTimeout(animateCounters, 1);
+                    } else {
+                        counter.innerText = target.toLocaleString('pt-BR'); // Formata o número final
+                    }
+                });
+            }
+            
+            // Usando Intersection Observer para iniciar a animação quando a seção fica visível
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !started) {
+                        started = true;
+                        animateCounters();
+                    }
+                });
+            }, { threshold: 0.5 }); // Inicia quando 50% da seção estiver visível
 
-
-        // 2. Animação do Contador de Números ao rolar a página
-        const statsSection = document.getElementById('numbers');
-        const counters = document.querySelectorAll('.number');
-        let started = false; // Para garantir que a animação rode apenas uma vez
-
-        function animateCounters() {
-            counters.forEach(counter => {
-                const target = +counter.getAttribute('data-target');
-                const count = +counter.innerText;
-
-                const increment = target / 200; // Velocidade da animação
-
-                if (count < target) {
-                    counter.innerText = `${Math.ceil(count + increment)}`;
-                    setTimeout(animateCounters, 1);
-                } else {
-                    counter.innerText = target.toLocaleString('pt-BR'); // Formata o número final
-                }
-            });
-        }
-        
-        // Usando Intersection Observer para iniciar a animação quando a seção fica visível
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !started) {
-                    started = true;
-                    animateCounters();
-                }
-            });
-        }, { threshold: 0.5 }); // Inicia quando 50% da seção estiver visível
-
-        observer.observe(statsSection);
+            if (statsSection) {
+                observer.observe(statsSection);
+            }
+        });
 
     </script>
 
